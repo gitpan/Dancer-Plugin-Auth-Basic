@@ -15,7 +15,7 @@ use Dancer::Response;
 use HTTP::Headers;
 use MIME::Base64;
 
-our $VERSION = '0.01';
+our $VERSION = '0.011';
 
 my $settings = plugin_setting;
 
@@ -83,8 +83,9 @@ sub _auth_basic {
 }
 
 before sub {
-    # Check if the request matches one of the protected paths
-    foreach my $path (keys %$paths) {
+    # Check if the request matches one of the protected paths (reverse sort the
+    # paths to find the longest matching path first)
+    foreach my $path (reverse sort keys %$paths) {
         my $path_re = '^' . quotemeta($path);
         
         if (request->path_info =~ qr{$path_re}) {
@@ -105,7 +106,7 @@ __END__
 
 =head1 VERSION
 
-Version 0.01
+Version 0.011
 
 =head1 SYNOPSIS
 
@@ -164,14 +165,14 @@ also be protected). Each path can have the following parameters:
 
 =over 4
 
+=item * C<password>
+
+Password (if a single user is allowed access).
+
 =item * C<realm>
 
 Realm name that will be displayed in the authentication dialog. Default:
 C<"Restricted area">
-
-=item * C<password>
-
-Password (if a single user is allowed access).
 
 =item * C<user>
 

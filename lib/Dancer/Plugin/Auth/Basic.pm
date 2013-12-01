@@ -312,7 +312,7 @@ access).
 
 =head1 AUTHOR
 
-Michal Wojciechowski, C<< <odyniec at cpan.org> >>
+Michael Vu, C<< <micvu at cpan.org> >>
 
 =head1 BUGS
 
@@ -332,7 +332,7 @@ You can find documentation for this module with the perldoc command.
 
 You can also look for information at:
 
-=over 4
+=over 5
 
 =item * RT: CPAN's request tracker
 
@@ -349,6 +349,10 @@ L<http://cpanratings.perl.org/d/Dancer-Plugin-Auth-Basic>
 =item * Search CPAN
 
 L<http://search.cpan.org/dist/Dancer-Plugin-Auth-Basic/>
+
+=item * Git Repository
+
+L<https://bitbucket.org/mvu8912/p5-dancer-plugin-auth-basic>
 
 =back
 

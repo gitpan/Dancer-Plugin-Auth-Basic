@@ -2,63 +2,78 @@
 use strict;
 use warnings;
 
+use 5.006;
 
-
-use ExtUtils::MakeMaker 6.30;
+use ExtUtils::MakeMaker 6.17;
 
 
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Basic HTTP authentication for Dancer web apps",
-  "AUTHOR" => "Michael Vu <micvu\@cpan.org>",
+  "AUTHOR" => "Michal Wojciechowski <odyniec\@cpan.org>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => "6.30"
+    "ExtUtils::MakeMaker" => "6.17"
   },
   "DISTNAME" => "Dancer-Plugin-Auth-Basic",
   "EXE_FILES" => [],
-  "LICENSE" => "gpl",
+  "LICENSE" => "perl",
   "NAME" => "Dancer::Plugin::Auth::Basic",
   "PREREQ_PM" => {
     "Authen::Passphrase" => 0,
-    "Dancer" => "1.307",
+    "Dancer" => 0,
+    "Dancer::Plugin" => 0,
+    "Dancer::Response" => 0,
     "HTTP::Headers" => 0,
-    "Pod::Readme" => 0,
-    "Pod::Select" => 0,
-    "Test::More" => 0
+    "MIME::Base64" => 0,
+    "strict" => 0,
+    "warnings" => 0
   },
-  "TEST_REQUIRES" => {},
-  "VERSION" => "0.0211",
+  "TEST_REQUIRES" => {
+    "Dancer::Test" => 0,
+    "ExtUtils::MakeMaker" => 0,
+    "File::Spec" => 0,
+    "File::Spec::Functions" => 0,
+    "File::Temp" => 0,
+    "IO::Handle" => 0,
+    "IPC::Open3" => 0,
+    "List::Util" => 0,
+    "Test::More" => 0,
+    "lib" => 0
+  },
+  "VERSION" => "0.030",
   "test" => {
     "TESTS" => "t/*.t"
   }
 );
 
 
-unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
-  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
-  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
-  for my $mod ( keys %$tr ) {
-    if ( exists $br->{$mod} ) {
-      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
-    }
-    else {
-      $br->{$mod} = $tr->{$mod};
-    }
-  }
-}
+my %FallbackPrereqs = (
+  "Authen::Passphrase" => 0,
+  "Dancer" => 0,
+  "Dancer::Plugin" => 0,
+  "Dancer::Response" => 0,
+  "Dancer::Test" => 0,
+  "ExtUtils::MakeMaker" => 0,
+  "File::Spec" => 0,
+  "File::Spec::Functions" => 0,
+  "File::Temp" => 0,
+  "HTTP::Headers" => 0,
+  "IO::Handle" => 0,
+  "IPC::Open3" => 0,
+  "List::Util" => 0,
+  "MIME::Base64" => 0,
+  "Test::More" => 0,
+  "lib" => 0,
+  "strict" => 0,
+  "warnings" => 0
+);
 
-unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
-  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
-  my $pp = $WriteMakefileArgs{PREREQ_PM};
-  for my $mod ( keys %$br ) {
-    if ( exists $pp->{$mod} ) {
-      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
-    }
-    else {
-      $pp->{$mod} = $br->{$mod};
-    }
-  }
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  delete $WriteMakefileArgs{TEST_REQUIRES};
+  delete $WriteMakefileArgs{BUILD_REQUIRES};
+  $WriteMakefileArgs{PREREQ_PM} = \%FallbackPrereqs;
 }
 
 delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
